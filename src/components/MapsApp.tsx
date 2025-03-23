@@ -1,6 +1,5 @@
 import { useStore } from "@nanostores/react";
 import { $places, placesReducer } from "@/store/places.store";
-import { getUbication } from "@/helpers/getUbication";
 
 export const MapsApp = () => {
   const { isLoading, userLocation } = useStore($places);
@@ -13,10 +12,12 @@ export const MapsApp = () => {
 
       <button
         className={`px-4 py-2 rounded-md text-white ${
-          isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+          isLoading
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-blue-500 hover:bg-blue-600"
         }`}
         onClick={() => {
-          if (!isLoading) getUbication();
+          if (!isLoading) placesReducer.getUserLocation();
         }}
         disabled={isLoading}
       >
@@ -25,7 +26,9 @@ export const MapsApp = () => {
 
       <button
         className={`px-4 py-2 rounded-md text-white ${
-          isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-red-500 hover:bg-red-600"
+          isLoading
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-red-500 hover:bg-red-600"
         }`}
         onClick={() => {
           if (!isLoading) placesReducer.setInitialState();

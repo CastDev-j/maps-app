@@ -12,6 +12,7 @@ const loadState = () => {
   return INITIAL_STATE;
 };
 
+import { getUbication } from "@/helpers/getUbication";
 import type { Location, PlacesState } from "@/interfaces";
 import { atom } from "nanostores";
 
@@ -25,8 +26,6 @@ const INITIAL_STATE: PlacesState = {
 
 export const $places = atom<PlacesState>(loadState());
 
-// Todo: remover los setTimeout y reemplazarlos por procesos asíncronos reales
-
 export const placesReducer = {
   setUserLocation: (location: Location) => {
     $places.set({
@@ -34,16 +33,13 @@ export const placesReducer = {
       isLoading: true,
     });
 
-    setTimeout(() => {
-      // Simulate async process
-      $places.set({
-        ...$places.get(),
-        userLocation: location,
-        isLoading: false,
-      });
+    $places.set({
+      ...$places.get(),
+      userLocation: location,
+      isLoading: false,
+    });
 
-      saveState($places.get());
-    }, 1000); // Replace with actual async process
+    saveState($places.get());
   },
   setInitialState: () => {
     $places.set({
@@ -51,14 +47,26 @@ export const placesReducer = {
       isLoading: true,
     });
 
-    setTimeout(() => {
-      // Simulate async process
-      $places.set({
-        ...INITIAL_STATE,
-        isLoading: false,
-      });
+    $places.set({
+      ...INITIAL_STATE,
+      isLoading: false,
+    });
 
-      saveState($places.get());
-    }, 1000); // Replace with actual async process
+    saveState($places.get());
+  },
+  getUserLocation: async () => {
+    $places.set({
+      ...$places.get(),
+      isLoading: true,
+    });
+
+    const ubication = await getUbication();
+    $places.set({
+      ...$places.get(),
+      userLocation: ubication,
+    });
+    saveState($places.get());
+
+    return ubication;
   },
 };

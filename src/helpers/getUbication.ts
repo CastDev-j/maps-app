@@ -12,25 +12,27 @@ import { placesReducer } from "@/store/places.store";
  *
  * @throws Si el navegador no soporta la geolocalización, se muestra un mensaje en la consola.
  */
-export const getUbication = () => {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      placesReducer.setUserLocation({
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      });
-
-      return {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      };
-    });
-  } else {
+export const getUbication = async (): Promise<{ latitude: number; longitude: number }> => {
+  if (!navigator.geolocation) {
     console.log("Geolocation is not supported by this browser.");
-
-    return {
-      latitude: 0,
-      longitude: 0,
-    };
+    return { latitude: 0, longitude: 0 };
   }
+
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const location = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+
+        placesReducer.setUserLocation(location);
+        resolve(location);
+      },
+      (error) => {
+        console.error("Error obtaining geolocation:", error);
+        reject(error);
+      }
+    );
+  });
 };
