@@ -12,11 +12,17 @@ import { placesReducer } from "@/store/places.store";
  *
  * @throws Si el navegador no soporta la geolocalización, se muestra un mensaje en la consola.
  */
+
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const getUbication = async (): Promise<{ latitude: number; longitude: number }> => {
   if (!navigator.geolocation) {
     console.log("Geolocation is not supported by this browser.");
     return { latitude: 0, longitude: 0 };
   }
+
+  await sleep(2000);
 
   return new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(

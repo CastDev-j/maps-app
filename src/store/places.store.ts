@@ -1,4 +1,6 @@
-export const prerender = false;
+import { getUbication } from "@/helpers/getUbication";
+import type { Location, PlacesState } from "@/interfaces";
+import { atom } from "nanostores";
 
 const saveState = (state: PlacesState) => {
   localStorage.setItem("places", JSON.stringify(state));
@@ -12,9 +14,6 @@ const loadState = () => {
   return INITIAL_STATE;
 };
 
-import { getUbication } from "@/helpers/getUbication";
-import type { Location, PlacesState } from "@/interfaces";
-import { atom } from "nanostores";
 
 const INITIAL_STATE: PlacesState = {
   isLoading: false,
@@ -79,4 +78,4 @@ export const placesReducer = {
       return null;
     }
   },
-};
+}; 
