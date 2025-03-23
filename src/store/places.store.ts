@@ -60,13 +60,23 @@ export const placesReducer = {
       isLoading: true,
     });
 
-    const ubication = await getUbication();
-    $places.set({
-      ...$places.get(),
-      userLocation: ubication,
-    });
-    saveState($places.get());
+    try {
+      const ubication = await getUbication();
+      $places.set({
+        ...$places.get(),
+        userLocation: ubication,
+      });
+      saveState($places.get());
 
-    return ubication;
+      return ubication;
+    } catch (error) {
+      console.error("Error getting user location:", error);
+      $places.set({
+        ...$places.get(),
+        isLoading: false,
+      });
+
+      return null;
+    }
   },
 };
