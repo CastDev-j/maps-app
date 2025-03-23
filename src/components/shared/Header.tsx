@@ -82,7 +82,6 @@ export const Header: React.FC = memo(() => {
       const isOpening = !prevOpen;
 
       if (isOpening) {
-        // Animación de despliegue
         gsap.fromTo(
           navRef.current,
           { height: 0, opacity: 0, display: "none" },
@@ -95,7 +94,6 @@ export const Header: React.FC = memo(() => {
           }
         );
       } else {
-        // Animación de repliegue
         gsap.to(navRef.current, {
           height: 0,
           opacity: 0,
@@ -116,7 +114,6 @@ export const Header: React.FC = memo(() => {
 
     window.addEventListener("resize", handleResize);
 
-    // Ejecutar handleResize al montar para aplicar el estado inicial correctamente
     handleResize();
 
     return () => {
