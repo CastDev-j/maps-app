@@ -19,7 +19,16 @@ export const MapsApp = () => {
           });
         }}
       >
-        Set User Location
+        Set Test State
+      </button>
+
+      <button
+        className="bg-amber-50"
+        onClick={() => {
+          placesReducer.setInitialState();
+        }}
+      >
+        Set Initial State
       </button>
 
       {JSON.stringify({ places }, null, 2)}

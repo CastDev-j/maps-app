@@ -26,7 +26,6 @@ const INITIAL_STATE: PlacesState = {
 
 export const $places = atom<PlacesState>(loadState());
 
-
 export const placesReducer = {
   setUserLocation: (location: Location) => {
     $places.set({
@@ -36,4 +35,9 @@ export const placesReducer = {
 
     saveState($places.get());
   },
+  setInitialState: () => {
+    $places.set(INITIAL_STATE);
+
+    saveState($places.get());
+  }
 };
