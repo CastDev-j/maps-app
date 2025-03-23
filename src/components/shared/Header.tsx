@@ -44,7 +44,7 @@ const NavLinks: React.FC<{ open: boolean }> = memo(({ open }) => {
     { href: "/", label: "Inicio" },
     { href: "/map", label: "Mapa" },
     {
-      href: "https://github.com/CastDev-j",
+      href: "https://github.com/CastDev-j/maps-app",
       label: "Repositorio",
       external: true,
     },
