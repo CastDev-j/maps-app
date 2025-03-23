@@ -32,7 +32,7 @@ const { title, description } = Astro.props;
     <ClientRouter />
   </head>
   <body>
-    <Header client:visible />
+    <Header client:only="react" />
     <span
       class="flex justify-center min-h-screen self-center p-6 animate-fade animate-duration-200 animate-ease-in"
     >

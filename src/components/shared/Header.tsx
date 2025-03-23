@@ -59,7 +59,9 @@ const NavLinks: React.FC<{ open: boolean }> = memo(({ open }) => {
       {links.map((link, index) => (
         <a
           key={index}
-          className="text-center px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg md:mt-0 md:ml-4 hover:text-neutral-900 focus:text-neutral-900 hover:bg-neutral-100 focus:bg-neutral-200 focus:outline-none focus:shadow-outline"
+          className={`text-center px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg md:mt-0 md:ml-4 hover:text-neutral-900 focus:text-neutral-900 hover:bg-neutral-100 focus:bg-neutral-200 focus:outline-none focus:shadow-outline ${
+            open ? "text-neutral-900 font-bold" : ""
+          }`}
           href={link.href}
           target={link.external ? "_blank" : "_self"}
           rel={link.external ? "noopener noreferrer" : ""}
@@ -109,26 +111,32 @@ export const Header: React.FC = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768 && open) {
-        gsap.set(navRef.current, {
-          height: "auto",
-          opacity: 1,
-          display: "flex",
-        });
-      } else if (window.innerWidth < 768 && open) {
-        gsap.set(navRef.current, { height: 0, opacity: 0, display: "none" });
-        setOpen(false);
-      }
+      setOpen(window.innerWidth >= 768);
     };
 
     window.addEventListener("resize", handleResize);
+
+    // Ejecutar handleResize al montar para aplicar el estado inicial correctamente
+    handleResize();
+
     return () => {
       window.removeEventListener("resize", handleResize);
     };
+  }, []);
+
+  useEffect(() => {
+    if (open) {
+      gsap.set(navRef.current, { height: "auto", opacity: 1, display: "flex" });
+    } else {
+      gsap.set(navRef.current, { height: 0, opacity: 0, display: "none" });
+    }
   }, [open]);
 
   return (
-    <div id="header" className="min-h-fit bg-neutral-100 animate-fade animate-duration-200 animate-ease-in">
+    <div
+      id="header"
+      className="min-h-fit bg-neutral-100 animate-fade animate-duration-200 animate-ease-in"
+    >
       <div className="antialiased bg-neutral-100">
         <div className="w-full text-neutral-700 bg-white">
           <div className="flex flex-col max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
