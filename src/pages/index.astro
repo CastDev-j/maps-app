@@ -1,11 +1,113 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+  title="Inicio"
+  description="Este proyecto utiliza Mapbox, React, Tailwind, HTML, Astro y GSAP para crear una experiencia interactiva de mapas."
+>
+  <div class="container">
+    <h1 class="text-4xl font-bold text-center">
+      ¡Bienvenido a Mapas Perfectos!
+    </h1>
+    <p class="mt-12 text-lg text-center">
+      Creado por <strong>CastDev-J</strong>, estudiante y programador frontend.
+    </p>
+    <p class="mt-2 mb-12 text-lg text-center">
+      Para consultas, quejas y sugerencias, mis datos están en el <strong
+        ><a href="#footer" class="underline">pie de página</a></strong
+      >.
+    </p>
+
+    <div
+      class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 gap-y-12 justify-center"
+    >
+      <!-- ¿Qué es este proyecto? -->
+      <div
+        class="p-6 border-l-4 border-neutral-500 text-center shadow rounded-sm"
+      >
+        <h2 class="text-2xl font-semibold">¿Qué es este proyecto?</h2>
+        <p class="mt-6">
+          Este proyecto es una <strong>aplicación interactiva</strong> que utiliza
+          <strong>Mapbox</strong> para mostrar mapas dinámicos y personalizables.
+          Está desarrollado con tecnologías modernas como <strong>React</strong
+          >, <strong>Tailwind CSS</strong>, <strong>HTML</strong>, <strong
+            >Astro</strong
+          > y <strong>GSAP</strong>.
+        </p>
+      </div>
+
+      <!-- Objetivos del Proyecto -->
+      <div
+        class="p-6 border-l-4 border-neutral-500 text-center shadow rounded-sm"
+      >
+        <h2 class="text-2xl font-semibold">Objetivos del Proyecto</h2>
+        <ul class="list-disc pl-6 mt-6 space-y-2 text-left inline-block">
+          <li>
+            Proveer una <strong>experiencia interactiva</strong> y visualmente atractiva
+            con mapas dinámicos.
+          </li>
+          <li>
+            Permitir a los usuarios <strong>personalizar</strong> y explorar mapas
+            según sus necesidades.
+          </li>
+          <li>
+            Fomentar el <strong>aprendizaje</strong> y la práctica en el uso de tecnologías
+            modernas.
+          </li>
+        </ul>
+      </div>
+
+      <!-- Características Principales -->
+      <div
+        class="p-6 border-l-4 border-neutral-500 text-center shadow rounded-sm"
+      >
+        <h2 class="text-2xl font-semibold">Características Principales</h2>
+        <ul class="list-disc pl-6 mt-6 space-y-2 text-left inline-block">
+          <li>
+            <strong>Integración con Mapbox:</strong> Mapas dinámicos y personalizables.
+          </li>
+          <li>
+            <strong>Animaciones con GSAP:</strong> Transiciones suaves y atractivas.
+          </li>
+          <li>
+            <strong>Estilo Responsivo:</strong> Diseño adaptativo para dispositivos
+            móviles y desktop.
+          </li>
+          <li>
+            <strong>Interactividad:</strong> Marcadores, capas y controles personalizables.
+          </li>
+          <li>
+            <strong>Uso de React:</strong> Componentes reutilizables y dinámicos.
+          </li>
+        </ul>
+      </div>
+
+      <!-- Tecnologías Utilizadas -->
+      <div
+        class="p-6 border-l-4 border-neutral-500 text-center shadow rounded-sm"
+      >
+        <h2 class="text-2xl font-semibold">Tecnologías Utilizadas</h2>
+        <ul class="list-disc pl-6 mt-6 space-y-2 text-left inline-block">
+          <li><strong>Mapbox:</strong> Plataforma para mapas interactivos.</li>
+          <li><strong>React:</strong> Interfaces dinámicas y modernas.</li>
+          <li><strong>Tailwind CSS:</strong> Estilo rápido y responsivo.</li>
+          <li>
+            <strong>Astro:</strong> Framework para generación estática y rápida.
+          </li>
+          <li>
+            <strong>GSAP:</strong> Animaciones avanzadas y personalizadas.
+          </li>
+          <li><strong>HTML:</strong> Estructura semántica del proyecto.</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="mt-12 text-center">
+      Creado por <strong>CastDev-J</strong>. ¿Tienes un proyecto en mente?
+      <strong>¡Contáctame!</strong> Encuentra mis datos en el <strong
+        ><a href="#footer" class="underline">pie de página</a></strong
+      >.
+    </p>
+  </div>
 </Layout>
