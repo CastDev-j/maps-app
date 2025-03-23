@@ -29,7 +29,7 @@ const { title, description } = Astro.props;
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
 
-    <Analytics />
+    <ClientRouter />
   </head>
   <body>
     <Header client:visible />
@@ -40,6 +40,6 @@ const { title, description } = Astro.props;
     </span>
     <Footer />
   </body>
-  <ClientRouter />
+  <Analytics />
 
 </html>
