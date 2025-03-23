@@ -20,7 +20,7 @@ export const MapsApp = () => {
         }}
         disabled={isLoading}
       >
-        Colocar Ubicación
+        Actualizar Ubicación
       </button>
 
       <button
