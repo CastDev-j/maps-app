@@ -19,7 +19,6 @@ const { title, description } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="stylesheet" href="@/styles/global.css">
     <meta name="generator" content={Astro.generator} />
     <title>
       Mapas Perfectos | {title}
@@ -30,7 +29,6 @@ const { title, description } = Astro.props;
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
 
-    <ClientRouter />
     <Analytics />
   </head>
   <body>
@@ -42,4 +40,6 @@ const { title, description } = Astro.props;
     </span>
     <Footer />
   </body>
+  <ClientRouter />
+
 </html>
