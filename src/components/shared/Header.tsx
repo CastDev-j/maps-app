@@ -73,7 +73,7 @@ const NavLinks: React.FC<{ open: boolean }> = memo(({ open }) => {
   );
 });
 
-export const Header: React.FC = () => {
+export const Header: React.FC = memo(() => {
   const [open, setOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
 
@@ -152,4 +152,4 @@ export const Header: React.FC = () => {
       </div>
     </div>
   );
-};
+});
