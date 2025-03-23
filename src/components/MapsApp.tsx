@@ -1,8 +1,9 @@
 import { useStore } from "@nanostores/react";
 import { $places, placesReducer } from "@/store/places.store";
+import { getUbication } from "@/helpers/getUbication";
 
 export const MapsApp = () => {
-  const places = useStore($places);
+  const { isLoading, userLocation } = useStore($places);
 
   return (
     <section className="w-full flex flex-col items-start gap-6">
@@ -11,27 +12,36 @@ export const MapsApp = () => {
       <p>Aquí va el mapa</p>
 
       <button
-        className="bg-amber-50"
+        className={`px-4 py-2 rounded-md text-white ${
+          isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+        }`}
         onClick={() => {
-          placesReducer.setUserLocation({
-            latitude: 10,
-            longitude: 10,
-          });
+          if (!isLoading) getUbication();
         }}
+        disabled={isLoading}
       >
-        Set Test State
+        Colocar Ubicación
       </button>
 
       <button
-        className="bg-amber-50"
+        className={`px-4 py-2 rounded-md text-white ${
+          isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-red-500 hover:bg-red-600"
+        }`}
         onClick={() => {
-          placesReducer.setInitialState();
+          if (!isLoading) placesReducer.setInitialState();
         }}
+        disabled={isLoading}
       >
-        Set Initial State
+        Resetear
       </button>
 
-      {JSON.stringify({ places }, null, 2)}
+      <code>
+        <pre>
+          Estado de la aplicación:
+          <br />
+          {JSON.stringify({ isLoading, userLocation }, null, 2)}
+        </pre>
+      </code>
     </section>
   );
 };
