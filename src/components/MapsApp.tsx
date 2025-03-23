@@ -22,6 +22,15 @@ export const MapsApp = () => {
           <MapView />
         </>
       )}
+
+      <button
+        onClick={() => {
+          if (!isLoading) placesReducer.setInitialState();
+        }}
+        disabled={isLoading}
+      >
+        Resetear
+      </button>
     </section>
   );
 };
