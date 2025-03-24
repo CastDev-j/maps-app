@@ -22,8 +22,6 @@ export const getUbication = async (): Promise<{ latitude: number; longitude: num
     return { latitude: 0, longitude: 0 };
   }
 
-  await sleep(2000);
-
   return new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(
       (position) => {

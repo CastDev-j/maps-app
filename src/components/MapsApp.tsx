@@ -6,9 +6,10 @@ import { validateUserLocation } from "@/helpers/validUserLocation";
 import { useEffect, useState } from "react";
 import { MapStart } from "./MapStart";
 import { BtnMyLocation } from "./BtnMyLocation";
+import { SearchBar } from "./SearchBar";
 
 export const MapsApp = () => {
-  const { isLoading, isValidLocation, userLocation } = useMapsApp();
+  const { isLoading, isValidLocation } = useMapsApp();
 
   return (
     <section className="w-full flex flex-col items-start gap-6">
@@ -18,7 +19,10 @@ export const MapsApp = () => {
 
       {isValidLocation && !isLoading && (
         <>
+        <div className="flex gap-2 flex-wrap items-center w-full">
           <BtnMyLocation />
+          <SearchBar />
+        </div>
           <MapView />
         </>
       )}
@@ -29,7 +33,7 @@ export const MapsApp = () => {
         }}
         disabled={isLoading}
       >
-        Resetear
+        Resetear Ubicación
       </button>
     </section>
   );

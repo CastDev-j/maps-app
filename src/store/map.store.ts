@@ -1,15 +1,18 @@
+import { mapBoxToken } from "@/sharedEnv";
 import mapboxgl, { Map, Marker, Popup } from "mapbox-gl";
 import { atom } from "nanostores";
-mapboxgl.accessToken = import.meta.env.PUBLIC_MAPBOX_TOKEN || "";
+mapboxgl.accessToken = mapBoxToken;
 
 interface MapProps {
   isMapReady: boolean;
   map?: Map;
+  markers?: Marker[];
 }
 
 const INITIAL_STATE: MapProps = {
   isMapReady: false,
   map: undefined,
+  markers: [],
 };
 
 export const $map = atom<MapProps>(INITIAL_STATE);
@@ -51,6 +54,12 @@ export const mapReducer = {
   setInitialState: () => {
     $map.set({
       ...INITIAL_STATE,
+    });
+  },
+  setMarkers: (markers: Marker[]) => {
+    $map.set({
+      ...$map.get(),
+      markers,
     });
   },
 };
