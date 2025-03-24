@@ -1,7 +1,7 @@
 import type { Suggestion } from "@/interfaces";
 import { $places, placesReducer } from "@/store/places.store";
 import { useStore } from "@nanostores/react";
-import { useRef, useState } from "react";
+import { use, useRef, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { GrFormClose } from "react-icons/gr";
 import { useEffect } from "react";
@@ -15,22 +15,25 @@ const SearchInput = ({
   onQueryChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value: string;
 }) => (
-  <input
-    onChange={onQueryChange}
-    type="text"
-    placeholder="Buscar lugar..."
-    value={value}
-    className="w-full rounded-md border border-neutral-300 bg-white px-4 py-2 pr-10 text-sm shadow-sm focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900"
-  />
+  <>
+    <input
+      onChange={onQueryChange}
+      type="text"
+      placeholder="Buscar lugar..."
+      value={value}
+      className="w-full rounded-md border border-neutral-300 bg-white px-4 py-2 pr-10 text-sm shadow-sm focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900"
+    />
+    <FaSearch
+      onClick={() => placesReducer.searchPlaces(value)}
+      className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 cursor-pointer hover:text-neutral-600"
+      size={16}
+    />
+  </>
 );
 
-const SearchIcon = () => (
-  <FaSearch
-    className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 cursor-pointer hover:text-neutral-600"
-    size={16}
-  />
-);
 const SearchResults = ({ results }: { results: Suggestion[] }) => {
+  const [activePlaceId, setactivePlaceId] = useState("");
+
   const { isSuggestionsLoading, suggestions } = useStore($places);
   const { isMapReady, map } = useStore($map);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -60,7 +63,9 @@ const SearchResults = ({ results }: { results: Suggestion[] }) => {
     };
   }, []);
 
-  const onClick = (coordinates: [number, number]) => {
+  const onClick = (coordinates: [number, number], id: string) => {
+    setactivePlaceId(id);
+
     if (isMapReady && map) {
       setIsExpanded(false);
 
@@ -92,9 +97,16 @@ const SearchResults = ({ results }: { results: Suggestion[] }) => {
           </li>
           {results.map((result, index) => (
             <li
-              onClick={() => onClick(result.coordinates as [number, number])}
+              onClick={() =>
+                onClick(
+                  result.coordinates as [number, number],
+                  result.mapbox_id
+                )
+              }
               key={index}
-              className="group cursor-pointer rounded-md p-2 hover:bg-neutral-100 transition-colors"
+              className={`group cursor-pointer rounded-md p-2 hover:bg-neutral-100 transition-colors ${
+                activePlaceId === result.mapbox_id ? "bg-neutral-100" : ""
+              }`}
             >
               <div className="text-sm font-medium text-neutral-800 group-hover:text-neutral-900">
                 {result.name}
@@ -141,7 +153,6 @@ export const SearchBar = () => {
   return (
     <div className="relative max-w-md">
       <SearchInput onQueryChange={onQueryChange} value={value} />
-      <SearchIcon />
       {suggestions && <SearchResults results={suggestions} />}
     </div>
   );
