@@ -62,7 +62,6 @@ const SearchResults = ({ results }: { results: Suggestion[] }) => {
 
   const onClick = (coordinates: [number, number]) => {
     if (isMapReady && map) {
-
       setIsExpanded(false);
 
       map.flyTo({
