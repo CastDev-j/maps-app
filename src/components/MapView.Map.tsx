@@ -19,7 +19,6 @@ export const MapView = () => {
           number
         ],
         zoom: 14,
-        
       });
 
       mapReducer.setMapReady(map);
@@ -27,9 +26,20 @@ export const MapView = () => {
   }, [isLoading]);
 
   return (
-    <div
-      className="w-full min-h-screen flex flex-col items-start gap-6 rounded-lg"
-      ref={mapdiv}
-    ></div>
+    <>
+      <div
+        className="w-full min-h-screen flex flex-col items-start gap-6 rounded-lg"
+        ref={mapdiv}
+      ></div>
+
+      <button
+        onClick={() => {
+          if (!isLoading) placesReducer.setInitialState();
+        }}
+        disabled={isLoading}
+      >
+        Resetear Ubicación
+      </button>
+    </>
   );
 };

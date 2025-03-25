@@ -27,14 +27,6 @@ export const MapsApp = () => {
         </>
       )}
 
-      <button
-        onClick={() => {
-          if (!isLoading) placesReducer.setInitialState();
-        }}
-        disabled={isLoading}
-      >
-        Resetear Ubicación
-      </button>
     </section>
   );
 };
