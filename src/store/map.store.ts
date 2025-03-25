@@ -139,8 +139,5 @@ export const mapReducer = {
       ...$map.get(),
       map,
     });
-
-    // Save response data to localStorage
-    localStorage.setItem("route", JSON.stringify(response.data));
   },
 };
