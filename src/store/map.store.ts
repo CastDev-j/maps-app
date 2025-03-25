@@ -1,5 +1,13 @@
+import { directionsApi } from "@/apis/directionsApi";
+import type { Direction } from "@/interfaces";
 import { mapBoxToken } from "@/sharedEnv";
-import mapboxgl, { Map, Marker, Popup } from "mapbox-gl";
+import mapboxgl, {
+  LngLatBounds,
+  Map,
+  Marker,
+  Popup,
+  type AnySourceData,
+} from "mapbox-gl";
 import { atom } from "nanostores";
 mapboxgl.accessToken = mapBoxToken;
 
@@ -61,5 +69,78 @@ export const mapReducer = {
       ...$map.get(),
       markers,
     });
+  },
+  getRouteBetween: async (
+    origin: [number, number],
+    destination: [number, number]
+  ) => {
+    const response = (await directionsApi.get<Direction>(
+      `/${origin.join(",")};${destination.join(",")}`
+    )) as { data: Direction };
+
+    const { distance, duration, geometry } = response.data.routes[0];
+
+    const { coordinates: coords } = geometry;
+
+    const km = (distance / 1000).toFixed(2);
+    const min = Math.floor(duration / 60);
+
+    console.log({
+      km,
+      min,
+    });
+
+    const bounce = new LngLatBounds(origin, origin);
+
+    for (const coordinate of coords) {
+      const newCoords = [coordinate[0], coordinate[1]] as [number, number];
+      bounce.extend(newCoords);
+    }
+
+    const map = $map.get().map as Map;
+
+    map.fitBounds(bounce, {
+      padding: 100,
+    });
+
+    const sourceDate: AnySourceData = {
+      type: "geojson",
+      data: {
+        type: "Feature",
+        properties: {},
+        geometry: {
+          type: "LineString",
+          coordinates: coords,
+        },
+      },
+    };
+
+    if (map.getSource("route")) {
+      map.removeLayer("route");
+      map.removeSource("route");
+    }
+
+    map.addSource("route", sourceDate);
+    map.addLayer({
+      id: "route",
+      type: "line",
+      source: "route",
+      layout: {
+        "line-join": "round",
+        "line-cap": "round",
+      },
+      paint: {
+        "line-color": "#505050",
+        "line-width": 3,
+      },
+    });
+
+    $map.set({
+      ...$map.get(),
+      map,
+    });
+
+    // Save response data to localStorage
+    localStorage.setItem("route", JSON.stringify(response.data));
   },
 };

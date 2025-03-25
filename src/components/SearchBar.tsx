@@ -17,13 +17,20 @@ const SearchInput = ({
   value: string;
 }) => (
   <>
-    <input
-      onChange={onQueryChange}
-      type="text"
-      placeholder="Buscar lugar..."
-      value={value}
-      className="w-full rounded-md border border-neutral-300 bg-white px-4 py-2 pr-10 text-sm shadow-sm focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900"
-    />
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        placesReducer.searchPlaces(value);
+      }}
+    >
+      <input
+        onChange={onQueryChange}
+        type="text"
+        placeholder="Buscar lugar..."
+        value={value}
+        className="w-full rounded-md border border-neutral-300 bg-white px-4 py-2 pr-10 text-sm shadow-sm focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900"
+      />
+    </form>
     <FaSearch
       onClick={() => placesReducer.searchPlaces(value)}
       className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 cursor-pointer hover:text-neutral-600"
@@ -32,10 +39,16 @@ const SearchInput = ({
   </>
 );
 
-const SearchResults = ({ results, isLoading }: { results: Suggestion[], isLoading: boolean }) => {
+const SearchResults = ({
+  results,
+  isLoading,
+}: {
+  results: Suggestion[];
+  isLoading: boolean;
+}) => {
   const [activePlaceId, setactivePlaceId] = useState("");
 
-  const { isSuggestionsLoading } = useStore($places);
+  const { isSuggestionsLoading, userLocation } = useStore($places);
   const { isMapReady, map } = useStore($map);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -78,6 +91,18 @@ const SearchResults = ({ results, isLoading }: { results: Suggestion[], isLoadin
     }
   };
 
+  const getRoute = async (end: [number, number], id: string) => {
+    setactivePlaceId(id);
+    const start = [userLocation?.longitude, userLocation?.latitude] as [
+      number,
+      number
+    ];
+
+    mapReducer.getRouteBetween(start, end);
+
+    setIsExpanded(false);
+  };
+
   return (
     <div className="relative" ref={containerRef}>
       {isExpanded && (
@@ -91,17 +116,12 @@ const SearchResults = ({ results, isLoading }: { results: Suggestion[], isLoadin
           </li>
           {(isLoading || isSuggestionsLoading) && <LoadingSearch />}
 
-          {!isLoading && !isSuggestionsLoading &&
+          {!isLoading &&
+            !isSuggestionsLoading &&
             results.map((result, index) => (
               <li
-                onClick={() =>
-                  onClick(
-                    result.coordinates as [number, number],
-                    result.mapbox_id
-                  )
-                }
                 key={index}
-                className={`group cursor-pointer rounded-md p-2 hover:bg-neutral-100 transition-colors ${
+                className={`group cursor-pointer rounded-md p-2 ${
                   activePlaceId === result.mapbox_id ? "bg-neutral-100" : ""
                 }`}
               >
@@ -111,9 +131,30 @@ const SearchResults = ({ results, isLoading }: { results: Suggestion[], isLoadin
                 <div className="text-xs text-neutral-500 group-hover:text-neutral-700">
                   {result.address}
                 </div>
-                <button className="mt-2 text-xs font-semibold text-neutral-600 hover:text-neutral-900 transition-colors">
-                  Detalles
-                </button>
+                <div className="mt-2 flex gap-4">
+                  <button
+                    onClick={() =>
+                      onClick(
+                        result.coordinates as [number, number],
+                        result.mapbox_id
+                      )
+                    }
+                    className="cursor-pointer px-4 py-2 text-xs font-semibold text-neutral-50 bg-neutral-900 border border-neutral-900 rounded-md hover:bg-transparent hover:text-neutral-900 transition-colors"
+                  >
+                    Vista
+                  </button>
+                  <button
+                    onClick={() =>
+                      getRoute(
+                        result.coordinates as [number, number],
+                        result.mapbox_id
+                      )
+                    }
+                    className="cursor-pointer px-4 py-2 text-xs font-semibold text-neutral-900 border border-neutral-900 rounded-md hover:bg-neutral-900 hover:text-neutral-50 transition-colors"
+                  >
+                    Ruta
+                  </button>
+                </div>
               </li>
             ))}
         </ul>
@@ -152,7 +193,9 @@ export const SearchBar = () => {
   return (
     <div className="relative max-w-md">
       <SearchInput onQueryChange={onQueryChange} value={value} />
-      {suggestions && <SearchResults results={suggestions} isLoading={isLoading} />}
+      {suggestions && (
+        <SearchResults results={suggestions} isLoading={isLoading} />
+      )}
     </div>
   );
 };
